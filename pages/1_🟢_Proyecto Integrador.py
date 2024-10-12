@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd  
 import firebase_admin  
 from firebase_admin import credentials, firestore  
+from typing import List
 
 st.set_page_config(layout="wide")
 
@@ -61,12 +62,26 @@ with tab_Generador:
     # Inicializar Faker para Colombia
     fake = Faker('es_CO')
 
-    # Lista de ciudades colombianas
-    ciudades_colombianas = [
-        'Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 
-        'Cúcuta', 'Bucaramanga', 'Pereira', 'Santa Marta', 'Ibagué',
-        'Pasto', 'Manizales', 'Neiva', 'Villavicencio', 'Armenia'
-    ]
+    #Lista de nacionalidades
+    nacionalidades = [
+    "Argentina", "Brasil", "Canadiense", "Chileno", "Colombiano",
+    "Cubano", "Francés", "Alemán", "Español", "Estadounidense",
+    "Italiano", "Mexicano", "Peruano", "Inglés", "Japonés",
+    "Chino", "Indio", "Ruso", "Sueco", "Sudafricano"
+]
+
+
+    profesiones: List[str] = [
+        "Ingeniero", "Médico", "Profesor", "Abogado", "Arquitecto",
+        "Artista", "Cocinero", "Escritor", "Músico", "Piloto",
+        "Científico", "Veterinario", "Desarrollador de software", "Contador", "Diseñador gráfico",
+        "Electricista", "Carpintero", "Farmacéutico", "Físico", "Psicólogo", "Gerente de Proyectos",
+        "Director de Marketing", "Consultor de Negocios", "Abogado Corporativo",
+        "Analista Financiero", "Ejecutivo de Ventas", "Director de Recursos Humanos", "Product Manager",
+        "Emprendedor", "Director de Estrategia", "Coordinador de Alianzas", "Responsable de Desarrollo de Negocios",
+        "Asesor Legal", "Gerente de Operaciones", "Director de Tecnología (CTO)"
+]
+
 
     def generate_fake_users(n):
         users = []
@@ -75,33 +90,29 @@ with tab_Generador:
                 'nombre': fake.name(),
                 'email': fake.email(),
                 'edad': random.randint(18, 80),
-                'ciudad': random.choice(ciudades_colombianas)
-            }
+                'nacionalidad': random.choice(nacionalidades),
+                'profesiones': random.choice(profesiones),
+                'celular': random.randint(3000000000, 3999999999),
+                'cedula': random.randint(1000000000, 1999999999)
+    }
             users.append(user)
         return users
 
-    def generate_fake_products(n):
+    def genererate_rooms(n):
+        #info_salones
         categories = {
             'Electrónica': [
                 'Celular', 'Portátil', 'Tablet', 'Audífonos', 'Reloj inteligente', 
                 'Cámara digital', 'Parlante Bluetooth', 'Batería portátil', 
                 'Monitor', 'Teclado inalámbrico'
             ],
-            'Ropa': [
-                'Camiseta', 'Jean', 'Vestido', 'Chaqueta', 'Zapatos', 
-                'Sudadera', 'Medias', 'Ruana', 'Gorra', 'Falda'
-            ],
-            'Hogar': [
-                'Lámpara', 'Cojín', 'Cortinas', 'Olla', 'Juego de sábanas', 
-                'Toallas', 'Espejo', 'Reloj de pared', 'Tapete', 'Florero'
-            ],
-            'Deportes': [
-                'Balón de fútbol', 'Raqueta de tenis', 'Pesas', 
-                'Colchoneta de yoga', 'Bicicleta', 'Tenis para correr', 
-                'Maletín deportivo', 'Termo', 'Guantes de boxeo', 'Lazo para saltar'
-            ]
-        }
 
+            'Categoria': ["Standard", "Salon social", "Suite-Penhouse"],
+
+            #"id_salon": ["S101": "Salon social", "a": ""]
+
+        }   
+        #salones
         products = []
         for _ in range(n):
             category = random.choice(list(categories.keys()))
