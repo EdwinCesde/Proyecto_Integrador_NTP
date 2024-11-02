@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import requests
 
 st.set_page_config(layout="wide")
 
@@ -43,15 +44,55 @@ with tad_descripcion:
 #----------------------------------------------------------
 with tab_Análisis_Exploratorio:    
     st.title("Análisis Exploratorio")
-    st.markdown("""
-    * Muestra las primeras 5 filas del DataFrame.  **(df.head())**
-    * Muestra la cantidad de filas y columnas del DataFrame.  **(df.shape)**
-    * Muestra los tipos de datos de cada columna.  **(df.dtypes)**
-    * Identifica y muestra las columnas con valores nulos. **(df.isnull().sum())**
-    * Muestra un resumen estadístico de las columnas numéricas.  **(df.describe())**
-    * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
-    * Otra información importante           
-    """)   
+    # Definir la URL de la API y parámetros
+    url = "https://www.datos.gov.co/resource/ha6j-pa2r.json"
+    params = {
+        "$limit": 80000,   # Establece el límite en 80,000 registros
+        "$offset": 0
+    }
+
+    # Obtener los datos desde la API
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        datos_json = response.json()
+    else:
+        st.error("Error al obtener los datos de la API.")
+        datos_json = []
+
+    # Convertir los datos a DataFrame
+    df = pd.DataFrame.from_records(datos_json)
+
+    # Título de la Aplicación
+    st.title("Exploración de Datos del Dataset")
+
+    # Mostrar primeras 5 filas del DataFrame
+    st.subheader("Primeras 5 filas del DataFrame")
+    st.write(df.head())
+
+    # Mostrar cantidad de filas y columnas
+    st.subheader("Cantidad de filas y columnas")
+    st.write(f"Filas: {df.shape[0]}, Columnas: {df.shape[1]}")
+
+    # Mostrar tipos de datos de cada columna
+    st.subheader("Tipos de datos de cada columna")
+    st.write(df.dtypes)
+
+    # Identificar y mostrar columnas con valores nulos
+    st.subheader("Columnas con valores nulos")
+    st.write(df.isnull().sum())
+
+    # Mostrar resumen estadístico de las columnas numéricas
+    st.subheader("Resumen estadístico de columnas numéricas")
+    st.write(df.describe())
+
+    # Tabla con la frecuencia de valores únicos en una columna categórica
+    st.subheader("Frecuencia de valores únicos")
+    columna_categorica = st.selectbox("Selecciona una columna categórica:", df.select_dtypes(include="object").columns)
+    st.write(df[columna_categorica].value_counts())
+
+    # Otra información importante - Agrega aquí según tus necesidades
+    st.subheader("Otra Información")
+    st.write("Esta sección puede incluir gráficos, insights adicionales o análisis específicos.")
     
 #----------------------------------------------------------
 #Analítica 2
