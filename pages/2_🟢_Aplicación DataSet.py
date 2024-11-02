@@ -6,7 +6,7 @@ st.set_page_config(layout="wide")
 
 st.subheader("Análisis y Filtrado de Datos")
 
-df = pd.read_csv('./static/datasets/ventas.csv')
+df = pd.read_csv('./static/datasets/homicidios_trancito.csv')
 
 
 tad_descripcion, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Análisis Exploratorio", "Filtrado Básico", "Filtro Final Dinámico"])
@@ -44,56 +44,71 @@ with tad_descripcion:
 #----------------------------------------------------------
 with tab_Análisis_Exploratorio:    
     st.title("Análisis Exploratorio")
-    # Definir la URL de la API y parámetros
-    url = "https://www.datos.gov.co/resource/ha6j-pa2r.json"
-    params = {
-        "$limit": 80000,   # Establece el límite en 80,000 registros
-        "$offset": 0
-    }
+#     Definir la URL de la API y parámetros
+#    Hacerlo desde el csv 
 
-    # Obtener los datos desde la API
-    response = requests.get(url, params=params)
-    if response.status_code == 200:
-        datos_json = response.json()
-    else:
-        st.error("Error al obtener los datos de la API.")
-        datos_json = []
+    # Agregar un sidebar para los filtros
+    st.sidebar.header('Filtros') # realizar filtros
+    filtro_dpto = st.sidebar.multiselect(
+        'DEPARTAMENTO', df['DEPARTAMENTO'].unique()  # Asegúrate que el nombre de la columna es correcto
+    )
 
-    # Convertir los datos a DataFrame
-    df = pd.DataFrame.from_records(datos_json)
+    filtro_genero = st.sidebar.multiselect(
+        'GENERO', df['GENERO'].unique()  # Asegúrate que el nombre de la columna es correcto
+    )
 
-    # Título de la Aplicación
-    st.title("Exploración de Datos del Dataset")
+    filtro_grupo = st.sidebar.multiselect(
+        'GRUPO ETARÍO', df['GRUPO ETARÍO'].unique()  # Asegúrate que el nombre de la columna es correcto
+    )
 
-    # Mostrar primeras 5 filas del DataFrame
-    st.subheader("Primeras 5 filas del DataFrame")
-    st.write(df.head())
+    # Filtrar los datos
+    df_filtro = df.copy()
+    if filtro_dpto:
+        df_filtro = df_filtro[df_filtro['DEPARTAMENTO'].isin(filtro_dpto)]
+    if filtro_genero:
+        df_filtro = df_filtro[df_filtro['GENERO'].isin(filtro_genero)]
+    if filtro_grupo:
+        df_filtro = df_filtro[df_filtro['GRUPO ETARÍO'].isin(filtro_grupo)]
 
-    # Mostrar cantidad de filas y columnas
-    st.subheader("Cantidad de filas y columnas")
-    st.write(f"Filas: {df.shape[0]}, Columnas: {df.shape[1]}")
+    # Mostrar el DataFrame filtrado
+    st.dataframe(df_filtro)
 
-    # Mostrar tipos de datos de cada columna
-    st.subheader("Tipos de datos de cada columna")
-    st.write(df.dtypes)
 
-    # Identificar y mostrar columnas con valores nulos
-    st.subheader("Columnas con valores nulos")
-    st.write(df.isnull().sum())
+    st.title("Análisis Exploratorio")
+    st.markdown("""
 
-    # Mostrar resumen estadístico de las columnas numéricas
-    st.subheader("Resumen estadístico de columnas numéricas")
-    st.write(df.describe())
 
-    # Tabla con la frecuencia de valores únicos en una columna categórica
-    st.subheader("Frecuencia de valores únicos")
-    columna_categorica = st.selectbox("Selecciona una columna categórica:", df.select_dtypes(include="object").columns)
-    st.write(df[columna_categorica].value_counts())
 
-    # Otra información importante - Agrega aquí según tus necesidades
-    st.subheader("Otra Información")
-    st.write("Esta sección puede incluir gráficos, insights adicionales o análisis específicos.")
-    
+
+
+    * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
+        
+    """)  
+    #primeras 5 filas  
+    st.title('Muestra las primeras 5 filas del DataFrame.')
+    st.dataframe(df.head())
+    #Cantidad de filas y columnas 
+    st.title('Muestra la cantidad de filas y columnas del DataFrame')
+    st.dataframe(df.shape)
+    # Tipos de datos
+    st.title('Muestra los tipos de datos de cada columna.')
+    st.dataframe(df.dtypes)
+    #Identifica y muestra las columnas con valores nulos
+    st.title('Identifica y muestra las columnas con valores nulos.')
+    st.dataframe((df.isnull().sum()))
+    #Resumen estadístico de las columnas
+    st.title('Muestra un resumen estadístico de las columnas numéricas.')
+    st.dataframe(df.describe().drop(columns=['CODIGO DANE']))
+    #//////////////////////////////////////////////////////////
+    columna_categorica = 'ARMAS MEDIOS'  # Cambia esto por el nombre de tu columna
+
+    # Calcular las frecuencias de valores únicos
+    frecuencias = df[columna_categorica].value_counts()
+
+    # Mostrar en Streamlit
+    st.write(f"Frecuencia de valores únicos en la columna '{columna_categorica}':")
+    st.dataframe(frecuencias.reset_index().rename(columns={'index': 'Valor', columna_categorica: 'Frecuencia'}))
+
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------

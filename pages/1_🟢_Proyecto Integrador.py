@@ -5,6 +5,7 @@ import pandas as pd
 import firebase_admin  
 from firebase_admin import credentials, firestore  
 from typing import List
+from datetime import datetime, timedelta
 
 st.set_page_config(layout="wide")
 
@@ -57,7 +58,6 @@ with tad_descripcion:
 #----------------------------------------------------------
 #Generador de datos
 #----------------------------------------------------------
-with tab_Generador:
     st.write('Esta función Python genera datos ficticios de usuarios y productos y los carga en una base de datos Firestore, proporcionando una interfaz sencilla para controlar la cantidad de datos generados y visualizar los resultados.')
     # Inicializar Faker para Colombia
     fake = Faker('es_CO')
@@ -82,63 +82,85 @@ with tab_Generador:
         "Asesor Legal", "Gerente de Operaciones", "Director de Tecnología (CTO)"
 ]
 
+    salon: List[str] = [
+        'Auditorio', 'Salon social', 'Penhouse' 
+]
 
-    def generate_fake_users(n):
-        users = []
-        for _ in range(n):
-            user = {
-                'nombre': fake.name(),
-                'email': fake.email(),
-                'edad': random.randint(18, 80),
-                'nacionalidad': random.choice(nacionalidades),
-                'profesiones': random.choice(profesiones),
-                'celular': random.randint(3000000000, 3999999999),
-                'cedula': random.randint(1000000000, 1999999999)
-    }
-            users.append(user)
-        return users
+    categorias: List[str] = [
+        "Cumpleaños",
+        "Bodas",
+        "Aniversarios",
+        "Graduaciones",
+        "Fiestas temáticas",
+        "Baby showers",
+        "Fiestas de despedida",
+        "Fiestas de fin de año",
+        "Halloween",
+        "Fiestas corporativas",
+        "Fiestas de verano",
+        "Fiestas de inauguración",
+        "Fiestas de caridad",
+        "Picnics"
+]
+def random_date(start: datetime, end: datetime) -> datetime:
+    delta = end - start
+    random_days = random.randint(0, delta.days)
+    return start + timedelta(days=random_days)
 
-    def genererate_rooms(n):
-        #info_salones
-        categories = {
-            'Electrónica': [
-                'Celular', 'Portátil', 'Tablet', 'Audífonos', 'Reloj inteligente', 
-                'Cámara digital', 'Parlante Bluetooth', 'Batería portátil', 
-                'Monitor', 'Teclado inalámbrico'
-            ],
+# Ejemplo de uso
 
-            'Categoria': ["Standard", "Salon social", "Suite-Penhouse"],
+auxiliar = []
 
-            #"id_salon": ["S101": "Salon social", "a": ""]
 
-        }   
-        #salones
-        products = []
-        for _ in range(n):
-            category = random.choice(list(categories.keys()))
-            product_type = random.choice(categories[category])
+def generate_fake_users(n):
+    users = []
+    aforo = int 
+    for _ in range(n):
+        salon_seleccionado = random.choice(salon)
+        start_date = datetime(2020, 1, 1)
+        end_date = datetime(2023, 12, 31)
+        fecha_aleatoria = random_date(start_date, end_date)
+        
+        if salon_seleccionado == 'Auditorio':
+            aforo = random.randint(50, 100)
+        elif salon_seleccionado == 'Salon social':
+            aforo = random.randint(1, 40)
+
+        elif salon_seleccionado == 'Penhouse':
+            aforo = random.randint(20, 50)
             
-            product = {
-                'nombre': product_type,
-                'precio': round(random.uniform(10000, 1000000), -3),  # Precios en pesos colombianos
-                'categoria': category,
-                'stock': random.randint(0, 100)
-            }
-            products.append(product)
-        return products
+        user = {
+            'nombre': fake.name(),
+            'email': fake.email(),
+            'edad': random.randint(18, 80),
+            'nacionalidad': random.choice(nacionalidades),
+            'profesiones': random.choice(profesiones),
+            'celular': str(random.randint(3000000000, 3999999999)),
+            'cedula': str(random.randint(1000000000, 1999999999)),
+            'salon': salon_seleccionado,
+            'categoria': random.choice(categorias),
+            'ID Salon': salon_seleccionado,
+            'asistentes': aforo,
+            'fecha': fecha_aleatoria
+    }   
+        users.append(user)
+        auxiliar.append(user)
+    return users
 
-    def delete_collection(collection_name):
-        docs = db.collection(collection_name).get()
-        for doc in docs:
-            doc.reference.delete()
+def delete_collection(collection_name):
+    docs = db.collection(collection_name).get()
+    for doc in docs:
+        doc.reference.delete()
 
-    def add_data_to_firestore(collection, data):
-        for item in data:
-            db.collection(collection).add(item)
+def add_data_to_firestore(collection, data):
+    for item in data:
+        db.collection(collection).add(item)
+
+
+with tab_Generador:
+    st.write('Esta función Python genera datos ficticios de usuarios y productos y los carga en una base de datos Firestore, proporcionando una interfaz sencilla para controlar la cantidad de datos generados y visualizar los resultados.')
     
-    col1, col2 = st.columns(2)
-
-    with col1:
+    with st.container(height=500):
         st.subheader('Usuarios')
         num_users = st.number_input('Número de usuarios a generar', min_value=1, max_value=100, value=10)
         if st.button('Generar y Añadir Usuarios'):
@@ -148,19 +170,8 @@ with tab_Generador:
                 users = generate_fake_users(num_users)
                 add_data_to_firestore('usuarios', users)
             st.success(f'{num_users} usuarios añadidos a Firestore')
-            st.dataframe(pd.DataFrame(users))
+            st.dataframe(pd.DataFrame(users), width=1000, height=500)
 
-    with col2:
-        st.subheader('Productos')
-        num_products = st.number_input('Número de productos a generar', min_value=1, max_value=100, value=10)
-        if st.button('Generar y Añadir Productos'):
-            with st.spinner('Eliminando productos existentes...'):
-                delete_collection('productos')
-            with st.spinner('Generando y añadiendo nuevos productos...'):
-                products = generate_fake_products(num_products)
-                add_data_to_firestore('productos', products)
-            st.success(f'{num_products} productos añadidos a Firestore')
-            st.dataframe(pd.DataFrame(products))
 
 #----------------------------------------------------------
 #Datos
@@ -177,21 +188,7 @@ with tab_datos:
         df_users = pd.DataFrame(users_data)
         # Reordenar las columnas
         column_order = ['nombre', 'email', 'edad', 'ciudad']
-        df_users = df_users.reindex(columns=column_order)   
-
-        st.dataframe(df_users)
-    with tab_productos:       
-        # Obtener datos de una colección de Firestore
-        users = db.collection('productos').stream()
-        # Convertir datos a una lista de diccionarios
-        users_data = [doc.to_dict() for doc in users]
-        # Crear DataFrame
-        df_products = pd.DataFrame(users_data)
-         # Reordenar las columnas
-        column_order = ['nombre', 'categoria', 'precio', 'stock']
-        df_products = df_products.reindex(columns=column_order)
-        
-        st.dataframe(df_products)
+        df_users = df_users.reindex(columns=column_order)
 
 #----------------------------------------------------------
 #Analítica 1
@@ -207,7 +204,41 @@ with tab_Análisis_Exploratorio:
     * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
     * Otra información importante  
     """)
-    
+    df = auxiliar
+    st.title("Análisis Exploratorio")
+    st.markdown("""
+
+
+
+
+
+    * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
+        
+    """)  
+    #primeras 5 filas  
+    st.title('Muestra las primeras 5 filas del DataFrame.')
+    st.dataframe(df.head())
+    #Cantidad de filas y columnas 
+    st.title('Muestra la cantidad de filas y columnas del DataFrame')
+    st.dataframe(df.shape)
+    # Tipos de datos
+    st.title('Muestra los tipos de datos de cada columna.')
+    st.dataframe(df.dtypes)
+    #Identifica y muestra las columnas con valores nulos
+    st.title('Identifica y muestra las columnas con valores nulos.')
+    st.dataframe((df.isnull().sum()))
+    #Resumen estadístico de las columnas
+    st.title('Muestra un resumen estadístico de las columnas numéricas.')
+    st.dataframe(df.describe())
+    #//////////////////////////////////////////////////////////
+    columna_categorica = 'categoria'  # Cambia esto por el nombre de tu columna
+
+    # Calcular las frecuencias de valores únicos
+    frecuencias = df[columna_categorica].value_counts()
+
+    # Mostrar en Streamlit
+    st.write(f"Frecuencia de valores únicos en la columna '{columna_categorica}':")
+    st.dataframe(frecuencias.reset_index().rename(columns={'index': 'Valor', columna_categorica: 'Frecuencia'}))
     
 #----------------------------------------------------------
 #Analítica 2
@@ -231,5 +262,3 @@ with tab_Filtro_Final_Dinámico:
         * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
         * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
         """)
-
-
