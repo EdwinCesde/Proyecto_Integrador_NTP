@@ -5,8 +5,8 @@ st.set_page_config(layout="wide", page_title="Mapping Demo", page_icon="🌍")
 
 
 # Título y subtítulo
-st.title("Proyecto Integrador: [Nombre del Proyecto]")
-st.subheader("Un Viaje Creativo con [Nombre del Equipo]")
+st.title("Proyecto Integrador: Confereasy")
+st.subheader("Un Viaje Creativo con FourGroup")
 
 # Imagen de fondo
 image = Image.open("./static/proyecto integrador.png") 
@@ -15,17 +15,27 @@ st.image(image, width=700, use_column_width=True)
 # Integrantes
 st.header("Nuestro Equipo")
 
-col1, col2 = st.columns(2)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**[Nombre del Integrante 1]**")
-    st.write("[Rol en el proyecto]")
+    st.image("./static/bro.jpg", width=200)  # Reemplaza con la ruta de la foto
+    st.write("Esteban Giraldo")
+    st.write("Data analyst Developer")
 
 with col2:
-    st.image("./static/user.png", width=200)  # Reemplaza con la ruta de la foto
-    st.write("**[Nombre del Integrante 2]**")
-    st.write("[Rol en el proyecto]")
+    st.image("./static/Isaac.jpg", width=200)  # Reemplaza con la ruta de la foto
+    st.write("Isaac Cano")
+    st.write("Database Developer")
+
+with col3:
+    st.image("./static/Edwin.jpg", width=200)  # Reemplaza con la ruta de la foto
+    st.write("Edwin Cárdenas")
+    st.write("Graphics Developer")
+
+with col4:
+    st.image("./static/Mile.jpg", width=200)  # Reemplaza con la ruta de la foto
+    st.write("Mileidy Henao")
+    st.write("Fullstack Developer")
 
 # Descripción del proyecto
 st.header("Sobre el Proyecto")
