@@ -107,11 +107,7 @@ def random_date(start: datetime, end: datetime) -> datetime:
     random_days = random.randint(0, delta.days)
     return start + timedelta(days=random_days)
 
-# Ejemplo de uso
-
 auxiliar = []
-
-
 def generate_fake_users(n):
     users = []
     aforo = int 
@@ -144,7 +140,6 @@ def generate_fake_users(n):
             'fecha': fecha_aleatoria
     }   
         users.append(user)
-        auxiliar.append(user)
     return users
 
 def delete_collection(collection_name):
@@ -162,15 +157,16 @@ with tab_Generador:
     
     with st.container(height=500):
         st.subheader('Usuarios')
-        num_users = st.number_input('Número de usuarios a generar', min_value=1, max_value=100, value=10)
+        num_users = st.number_input('Número de usuarios a generar', min_value=1, max_value=1000, value=100)
         if st.button('Generar y Añadir Usuarios'):
             with st.spinner('Eliminando usuarios existentes...'):
                 delete_collection('usuarios')
             with st.spinner('Generando y añadiendo nuevos usuarios...'):
                 users = generate_fake_users(num_users)
+                auxiliar = pd.DataFrame(users)
                 add_data_to_firestore('usuarios', users)
             st.success(f'{num_users} usuarios añadidos a Firestore')
-            st.dataframe(pd.DataFrame(users), width=1000, height=500)
+            st.dataframe(pd.DataFrame(users))
 
 
 #----------------------------------------------------------
@@ -188,33 +184,16 @@ with tab_datos:
         df_users = pd.DataFrame(users_data)
         # Reordenar las columnas
         column_order = ['nombre', 'email', 'edad', 'ciudad']
-        df_users = df_users.reindex(columns=column_order)
+        df_users = df_users.reindex(columns=column_order)   
+        st.dataframe(df_users)
 
 #----------------------------------------------------------
 #Analítica 1
 #----------------------------------------------------------
 with tab_Análisis_Exploratorio:    
     st.title("Análisis Exploratorio")
-    st.markdown("""
-    * Muestra las primeras 5 filas del DataFrame.  **(df.head())**
-    * Muestra la cantidad de filas y columnas del DataFrame.  **(df.shape)**
-    * Muestra los tipos de datos de cada columna.  **(df.dtypes)**
-    * Identifica y muestra las columnas con valores nulos. **(df.isnull().sum())**
-    * Muestra un resumen estadístico de las columnas numéricas.  **(df.describe())**
-    * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
-    * Otra información importante  
-    """)
-    df = auxiliar
-    st.title("Análisis Exploratorio")
-    st.markdown("""
-
-
-
-
-
-    * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
-        
-    """)  
+    df =  pd.DataFrame(users_data)
+    st.title("Análisis Exploratorio")  
     #primeras 5 filas  
     st.title('Muestra las primeras 5 filas del DataFrame.')
     st.dataframe(df.head())
@@ -245,12 +224,30 @@ with tab_Análisis_Exploratorio:
 #----------------------------------------------------------
 with tab_Filtrado_Básico:
         st.title("Filtro Básico")
-        st.markdown("""
-        * Permite filtrar datos usando condiciones simples. **(df[df['columna'] == 'valor'])**
-        * Permite seleccionar una columna y un valor para el filtro. **(st.selectbox, st.text_input)**
-        * Permite elegir un operador de comparación (igual, diferente, mayor que, menor que). **(st.radio)**
-        * Muestra los datos filtrados en una tabla. **(st.dataframe)** 
-        """)
+        st.header('Filtros') # realizar filtros
+        filtro_nac = st.multiselect(
+            'nacionalidad', df['nacionalidad'].unique()  # Asegúrate que el nombre de la columna es correcto
+        )
+
+        filtro_profesion = st.multiselect(
+            'profesiones', df['profesiones'].unique()  # Asegúrate que el nombre de la columna es correcto
+        )
+
+        filtro_categoria = st.multiselect(
+            'categoria', df['categoria'].unique()  # Asegúrate que el nombre de la columna es correcto
+        )
+
+        # Filtrar los datos
+        df_filtro = df.copy()
+        if filtro_nac:
+            df_filtro = df_filtro[df_filtro['nacionalidad'].isin(filtro_nac)]
+        if filtro_profesion:
+            df_filtro = df_filtro[df_filtro['profesiones'].isin(filtro_profesion)]
+        if filtro_categoria:
+            df_filtro = df_filtro[df_filtro['categoria'].isin(filtro_categoria)]
+
+        # Mostrar el DataFrame filtrado
+        st.dataframe(df_filtro)
 
 #----------------------------------------------------------
 #Analítica 2

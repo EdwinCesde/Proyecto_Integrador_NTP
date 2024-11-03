@@ -6,7 +6,7 @@ st.set_page_config(layout="wide")
 
 st.subheader("Análisis y Filtrado de Datos")
 
-df = pd.read_csv('./static/datasets/homicidios_trancito.csv')
+df = pd.read_csv('./static/datasets/homicidios_trancito.csv') # DATAFRAME
 
 
 tad_descripcion, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Análisis Exploratorio", "Filtrado Básico", "Filtro Final Dinámico"])
@@ -43,47 +43,8 @@ with tad_descripcion:
 #Analítica 1
 #----------------------------------------------------------
 with tab_Análisis_Exploratorio:    
-    st.title("Análisis Exploratorio")
-#     Definir la URL de la API y parámetros
-#    Hacerlo desde el csv 
-
-    # Agregar un sidebar para los filtros
-    st.sidebar.header('Filtros') # realizar filtros
-    filtro_dpto = st.sidebar.multiselect(
-        'DEPARTAMENTO', df['DEPARTAMENTO'].unique()  # Asegúrate que el nombre de la columna es correcto
-    )
-
-    filtro_genero = st.sidebar.multiselect(
-        'GENERO', df['GENERO'].unique()  # Asegúrate que el nombre de la columna es correcto
-    )
-
-    filtro_grupo = st.sidebar.multiselect(
-        'GRUPO ETARÍO', df['GRUPO ETARÍO'].unique()  # Asegúrate que el nombre de la columna es correcto
-    )
-
-    # Filtrar los datos
-    df_filtro = df.copy()
-    if filtro_dpto:
-        df_filtro = df_filtro[df_filtro['DEPARTAMENTO'].isin(filtro_dpto)]
-    if filtro_genero:
-        df_filtro = df_filtro[df_filtro['GENERO'].isin(filtro_genero)]
-    if filtro_grupo:
-        df_filtro = df_filtro[df_filtro['GRUPO ETARÍO'].isin(filtro_grupo)]
-
-    # Mostrar el DataFrame filtrado
-    st.dataframe(df_filtro)
-
 
     st.title("Análisis Exploratorio")
-    st.markdown("""
-
-
-
-
-
-    * Muestra una tabla con la frecuencia de valores únicos para una columna categórica seleccionada. **(df['columna_categorica'].value_counts())** 
-        
-    """)  
     #primeras 5 filas  
     st.title('Muestra las primeras 5 filas del DataFrame.')
     st.dataframe(df.head())
@@ -114,12 +75,35 @@ with tab_Análisis_Exploratorio:
 #----------------------------------------------------------
 with tab_Filtrado_Básico:
         st.title("Filtro Básico")
-        st.markdown("""
-        * Permite filtrar datos usando condiciones simples. **(df[df['columna'] == 'valor'])**
-        * Permite seleccionar una columna y un valor para el filtro. **(st.selectbox, st.text_input)**
-        * Permite elegir un operador de comparación (igual, diferente, mayor que, menor que). **(st.radio)**
-        * Muestra los datos filtrados en una tabla. **(st.dataframe)** 
-        """)
+        st.title("Análisis Exploratorio")
+    #     Definir la URL de la API y parámetros
+    #    Hacerlo desde el csv 
+
+        # Agregar un sidebar para los filtros
+        st.header('Filtros') # realizar filtros
+        filtro_dpto = st.multiselect(
+            'DEPARTAMENTO', df['DEPARTAMENTO'].unique()  # Asegúrate que el nombre de la columna es correcto
+        )
+
+        filtro_genero = st.multiselect(
+            'GENERO', df['GENERO'].unique()  # Asegúrate que el nombre de la columna es correcto
+        )
+
+        filtro_grupo = st.multiselect(
+            'GRUPO ETARÍO', df['GRUPO ETARÍO'].unique()  # Asegúrate que el nombre de la columna es correcto
+        )
+
+        # Filtrar los datos
+        df_filtro = df.copy()
+        if filtro_dpto:
+            df_filtro = df_filtro[df_filtro['DEPARTAMENTO'].isin(filtro_dpto)]
+        if filtro_genero:
+            df_filtro = df_filtro[df_filtro['GENERO'].isin(filtro_genero)]
+        if filtro_grupo:
+            df_filtro = df_filtro[df_filtro['GRUPO ETARÍO'].isin(filtro_grupo)]
+
+        # Mostrar el DataFrame filtrado
+        st.dataframe(df_filtro)
 
 #----------------------------------------------------------
 #Analítica 3
