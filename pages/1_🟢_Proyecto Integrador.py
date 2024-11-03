@@ -1,9 +1,9 @@
 import random
-from faker import Faker
+from faker import Faker # type: ignore
 import streamlit as st 
 import pandas as pd  
-import firebase_admin  
-from firebase_admin import credentials, firestore  
+import firebase_admin   # type: ignore
+from firebase_admin import credentials, firestore   # type: ignore
 from typing import List
 from datetime import datetime, timedelta
 
