@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import requests
 
+
+
 st.set_page_config(layout="wide")
 
 st.subheader("Análisis y Filtrado de Datos")
@@ -16,7 +18,7 @@ tad_descripcion, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Fi
 #----------------------------------------------------------
 #Generador de datos
 #----------------------------------------------------------
-with tad_descripcion:      
+with tad_descripcion:    
 
     st.markdown('''
     ## Plantilla Básica para Proyecto Integrador
