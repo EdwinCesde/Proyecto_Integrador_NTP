@@ -5,11 +5,11 @@ st.set_page_config(layout="wide", page_title="Mapping Demo", page_icon="🌍")
 
 
 # Título y subtítulo
-st.title("Proyecto Integrador: Análisis Confereasy")
+st.title("Proyecto Integrador: Confereasy")
 st.subheader("Un Viaje Creativo con FourGroup")
 
 # Imagen de fondo
-image = Image.open("./static/proyecto.jpg") 
+image = Image.open("./static/proyecto integrador.png") 
 st.image(image, width=700, use_column_width=True)  
 
 # Integrantes
@@ -39,16 +39,9 @@ with col4:
 
 # Descripción del proyecto
 st.header("Sobre el Proyecto")
-st.write("La plataforma Análisis Confereasy es una solución  enfocada a la  lectura y análisis de datos clave de sus clientes, quienes buscan salas para conferencias, capacitaciones y espacios para eventos. A través de esta herramienta, Confereasy  obtiene una visión profunda de los comportamientos y preferencias de sus usuarios, permitiendo una mejora continua en sus servicios.")
-
-st.header("Objetivo")
-st.write("Generar hallazgos valiosos a partir del análisis de datos para que Confereasy pueda entender las preferencias y necesidades de sus clientes de manera profunda. Esto permite optimizar la gestión de sus espacios, adaptarse a las tendencias del mercado y ofrecer una experiencia que responda de manera más precisa a las expectativas de sus usuarios.")
-
-st.header("Problemática que aborda")
-st.write("En un mercado dinámico y competitivo, comprender a los clientes es clave para diferenciarse. Sin embargo, muchas empresas enfrentan dificultades para traducir los datos en conocimientos prácticos. Análisis Confereasy resuelve esta necesidad al ofrecer  análisis de datos, aportando claridad sobre los patrones de uso y preferencias de los clientes")
-
-st.header("Enfoque")
-st.write("Con un diseño  orientado a la recopilación de datos relevantes, Análisis Confereasy permite procesar información en tiempo real y transformarla en informes detallados que guían la toma de decisiones.")
+st.write("""
+[Escribe aquí una breve descripción del proyecto, incluyendo el objetivo principal, la problemática que aborda y el enfoque que se utiliza. Puedes ser creativo y usar un lenguaje atractivo.]
+""")
 
 # Más información
 st.header("Más Información")
@@ -59,7 +52,9 @@ st.header("Más Información")
 # - Presentación de resultados (fecha y formato)
 # - Contacto para preguntas
 
-st.write("Tecnologías Utilizadas: Python con librerías Streamlit, pandas.")
+st.write("""
+[Agrega la información adicional que consideres relevante.]
+""")
 
 # Footer con links
 st.markdown(

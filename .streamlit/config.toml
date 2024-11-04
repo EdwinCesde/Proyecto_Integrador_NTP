@@ -1,12 +1,3 @@
-[theme]
-primaryColor = "#66bb6a"
-backgroundColor = "#F3E5F5"
-secondaryBackgroundColor = "#66bb6a"
-textColor = "#000000"
-
-
 [server]
 enableStaticServing = true
-
-
 
