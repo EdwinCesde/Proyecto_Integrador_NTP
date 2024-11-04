@@ -1,6 +1,10 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 import requests
+
+
 
 st.set_page_config(layout="wide")
 
@@ -14,7 +18,7 @@ tad_descripcion, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Fi
 #----------------------------------------------------------
 #Generador de datos
 #----------------------------------------------------------
-with tad_descripcion:      
+with tad_descripcion:    
 
     st.markdown('''
     ## Plantilla Básica para Proyecto Integrador
@@ -110,11 +114,25 @@ with tab_Filtrado_Básico:
 #----------------------------------------------------------
 with tab_Filtro_Final_Dinámico:
         st.title("Filtro Final Dinámico")
+
+        fig, ax = plt.subplots()
+        ax.hist(df['GENERO'], bins=10)
+
+        st.pyplot(fig)
+
+        st.title("Accidentes por Departamento")
+
+        acc_dto = df['DEPARTAMENTO'].value_counts()
+
+        st.bar_chart(acc_dto)
         st.markdown("""
         * Muestra un resumen dinámico del DataFrame filtrado. 
         * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
         * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
         """)
+
+        acc_mpio = df['GRUPO ETARÍO'].value_counts()
+        st.bar_chart(acc_mpio)
 
 
 
