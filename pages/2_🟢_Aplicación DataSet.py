@@ -84,13 +84,9 @@ with tab_Filtrado_Básico:
         
         # Agregar un sidebar para los filtros
         st.header('Filtros') # realizar filtros
+        """
         filtro_dpto = st.multiselect(
             'DEPARTAMENTO', df['DEPARTAMENTO'].unique()  # Asegúrate que el nombre de la columna es correcto
-        )
-        dpto_unico = df['DEPARTAMENTO'].unique()
-        dpto = st.selectbox(
-             "Seleccione la cuidad",
-             dpto_unico
         )
 
         filtro_genero = st.multiselect(
@@ -111,9 +107,11 @@ with tab_Filtrado_Básico:
             df_filtro = df_filtro[df_filtro['GRUPO ETARÍO'].isin(filtro_grupo)]
 
         st.bar_chart()
+        
 
         # Mostrar el DataFrame filtrado
         st.dataframe(df_filtro)
+        """
 
 #----------------------------------------------------------
 #Analítica 3
@@ -121,8 +119,55 @@ with tab_Filtrado_Básico:
 with tab_Filtro_Final_Dinámico:
         st.title("Filtro Final Dinámico")
 
+        filtro_departamento = st.multiselect(
+             "DEPARTAMENTO",
+             df['DEPARTAMENTO'].unique()
+        )
+
+        filtro_vehiculo = st.multiselect(
+              "VEHÍCULO",
+              df['ARMAS MEDIOS'].unique()
+        )
+
+        filtro_genero = st.multiselect(
+              "GÉNERO", 
+              df['GENERO'].unique()
+        )
+
+        filtro_grupo = st.multiselect(
+            'GRUPO ETARÍO', 
+            df['GRUPO ETARÍO'].unique()  
+        )
+
+        df_filtrado = df.copy()
+        if filtro_departamento:
+            df_filtrado = df_filtrado[df_filtrado["DEPARTAMENTO"].isin(filtro_departamento)]
+        if filtro_vehiculo:
+            df_filtrado = df_filtrado[df_filtrado["ARMAS MEDIOS"].isin(filtro_vehiculo)]
+        if filtro_genero:
+            df_filtrado = df_filtrado[df_filtrado["GENERO"].isin(filtro_genero)] 
+        if filtro_grupo:
+            df_filtrado = df_filtrado[df_filtrado["GRUPO ETARIO"].isin(filtro_grupo)]
+   
         fig, ax = plt.subplots()
-        ax.hist(df['GENERO'], bins=10)
+        for grupo in df_filtrado["GRUPO ETARÍO"].unique():
+            data = df_filtrado[df_filtrado["GRUPO ETARÍO"] == grupo]
+            ax.hist(data["GENERO"], bins=10, alpha=0.5, label=grupo)
+
+        ax.set_xlabel('Género')
+        ax.set_ylabel('Cantidad')
+        ax.legend(title='Grupo Etario')
+
+        st.pyplot(fig)
+
+        fig, ax = plt.subplots()
+        for grupo in df_filtrado["ARMAS MEDIOS"].unique():
+            data = df_filtrado[df_filtrado["ARMAS MEDIOS"] == grupo]
+            ax.hist(data["GENERO"], bins=10, alpha=0.5, label=grupo)
+
+        ax.set_xlabel('Género')
+        ax.set_ylabel('Cantidad')
+        ax.legend(title='Vehículo')
 
         st.pyplot(fig)
 

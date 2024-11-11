@@ -251,20 +251,35 @@ with tab_Filtrado_Básico:
 #----------------------------------------------------------
 with tab_Filtro_Final_Dinámico:
         st.title("Filtro Final Dinámico")
-
-        fig, ax = plt.subplots()
-        ax.hist(df['edad'], bins=10)
-
-        st.pyplot(fig)
+        
+        st.markdown("""
+        Muestra las profesiones según lo filtrado por el usuario y si este selecciona mas de una profesión, las diferencia por colores
+""")
 
         st.header("Filtros")
-        filtro_edad = st.multiselect(
-            'Edad', df["edad"].unique()
-        )
+
+        min_edad, max_edad = int(df["edad"].min()), int(df["edad"].max())
+        filtro_edad = st.select_slider('Rango de Edad', options=range(min_edad, max_edad + 1), value=(min_edad, max_edad))
 
         filtro_profesion = st.multiselect(
             'Profesiones', df["profesiones"].unique()
         )
+
+        df_filtrado = df.copy()
+        df_filtrado = df_filtrado[(df_filtrado["edad"] >= filtro_edad[0]) & (df_filtrado["edad"] <= filtro_edad[1])]
+        if filtro_profesion:
+            df_filtrado = df_filtrado[df_filtrado["profesiones"].isin(filtro_profesion)]
+
+        fig, ax = plt.subplots()
+        for profesion in df_filtrado["profesiones"].unique():
+            data = df_filtrado[df_filtrado["profesiones"] == profesion]
+            ax.hist(data["edad"], bins=10, alpha=0.5, label=profesion)
+
+        ax.set_xlabel('Edad')
+        ax.set_ylabel('Frecuencia')
+        ax.legend(title='Profesiones')
+
+        st.pyplot(fig)
 
         st.markdown("""
         * Muestra un resumen dinámico del DataFrame filtrado. 
