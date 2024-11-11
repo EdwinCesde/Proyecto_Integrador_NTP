@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests
 
+
+
 st.set_page_config(layout="wide")
 
 st.subheader("Análisis y Filtrado de Datos")
@@ -79,11 +81,16 @@ with tab_Filtrado_Básico:
         st.title("Análisis Exploratorio")
     #     Definir la URL de la API y parámetros
     #    Hacerlo desde el csv 
-
+        
         # Agregar un sidebar para los filtros
         st.header('Filtros') # realizar filtros
         filtro_dpto = st.multiselect(
             'DEPARTAMENTO', df['DEPARTAMENTO'].unique()  # Asegúrate que el nombre de la columna es correcto
+        )
+        dpto_unico = df['DEPARTAMENTO'].unique()
+        dpto = st.selectbox(
+             "Seleccione la cuidad",
+             dpto_unico
         )
 
         filtro_genero = st.multiselect(
@@ -102,6 +109,8 @@ with tab_Filtrado_Básico:
             df_filtro = df_filtro[df_filtro['GENERO'].isin(filtro_genero)]
         if filtro_grupo:
             df_filtro = df_filtro[df_filtro['GRUPO ETARÍO'].isin(filtro_grupo)]
+
+        st.bar_chart()
 
         # Mostrar el DataFrame filtrado
         st.dataframe(df_filtro)

@@ -7,6 +7,8 @@ from firebase_admin import credentials, firestore
 from typing import List
 from datetime import datetime, timedelta
 
+import matplotlib.pyplot as plt
+
 st.set_page_config(layout="wide")
 
 st.subheader("Proyecto Integrador")
@@ -83,24 +85,19 @@ with tad_descripcion:
 ]
 
     salon: List[str] = [
-        'Auditorio', 'Salon social', 'Penhouse' 
+        'Auditorio', 'Salón Brainstorming', 'Salón Junta Directiva', 'Salón Capacitaciones' , 'Salón Eventos'
 ]
 
     categorias: List[str] = [
         "Cumpleaños",
-        "Bodas",
         "Aniversarios",
         "Graduaciones",
         "Fiestas temáticas",
-        "Baby showers",
         "Fiestas de despedida",
-        "Fiestas de fin de año",
         "Halloween",
         "Fiestas corporativas",
-        "Fiestas de verano",
         "Fiestas de inauguración",
-        "Fiestas de caridad",
-        "Picnics"
+        "Fiestas de caridad"
 ]
 def random_date(start: datetime, end: datetime) -> datetime:
     delta = end - start
@@ -254,6 +251,21 @@ with tab_Filtrado_Básico:
 #----------------------------------------------------------
 with tab_Filtro_Final_Dinámico:
         st.title("Filtro Final Dinámico")
+
+        fig, ax = plt.subplots()
+        ax.hist(df['edad'], bins=10)
+
+        st.pyplot(fig)
+
+        st.header("Filtros")
+        filtro_edad = st.multiselect(
+            'Edad', df["edad"].unique()
+        )
+
+        filtro_profesion = st.multiselect(
+            'Profesiones', df["profesiones"].unique()
+        )
+
         st.markdown("""
         * Muestra un resumen dinámico del DataFrame filtrado. 
         * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
