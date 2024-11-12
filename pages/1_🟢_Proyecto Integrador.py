@@ -85,7 +85,7 @@ with tad_descripcion:
 ]
 
     salon: List[str] = [
-        'Auditorio', 'Salón Brainstorming', 'Salón Junta Directiva', 'Salón Capacitaciones' , 'Salón Eventos'
+        'Auditorio', 'Salon social', 'Penhouse'
 ]
 
     categorias: List[str] = [
