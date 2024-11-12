@@ -92,7 +92,7 @@ with tad_descripcion:
 ]
 
     salon: List[str] = [
-        'Auditorio', 'Salon social', 'Penhouse', ''
+        'Auditorio', 'Salon social', 'Penhouse', 
 ]
 
     categorias: List[str] = [
