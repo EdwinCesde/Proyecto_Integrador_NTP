@@ -39,15 +39,24 @@ with tad_descripcion:
 
     ### Introducción
 
-    -   ¿Qué es el proyecto?
-    -   ¿Cuál es el objetivo principal?
-    -   ¿Por qué es importante?
+    ### ¿Qué es el proyecto?
+     La plataforma Análisis Confereasy es una solución  enfocada a la  lectura y análisis de datos clave de sus clientes, quienes buscan salas para conferencias, capacitaciones y espacios para eventos. A través de esta herramienta, Confereasy  obtiene una visión profunda de los comportamientos y preferencias de sus usuarios, permitiendo una mejora continua en sus servicios.          
+    ### ¿Cuál es el objetivo principal?
+    Generar hallazgos valiosos a partir del análisis de datos para que Confereasy pueda entender las preferencias y necesidades de sus clientes de manera profunda. Esto permite optimizar la gestión de sus espacios, adaptarse a las tendencias del mercado y ofrecer una experiencia que responda de manera más precisa a las expectativas de sus usuarios
+    ### ¿Por qué es importante?
+    La plataforma es crucial para Confereasy ya que facilita un enfoque basado en datos para la toma de decisiones. Al entender mejor las necesidades y comportamientos de sus clientes, Confereasy puede adaptarse de manera más eficiente a las demandas del mercado, mejorar sus servicios y fortalecer su propuesta de valor. Además, el análisis de datos permite identificar áreas de oportunidad y anticipar tendencias, lo que coloca a Confereasy en una posición de ventaja competitiva en el sector de alquiler de espacios para eventos y capacitaciones.
 
     ### Desarrollo
 
-    -   Explicación detallada del proyecto
-    -   Procedimiento utilizado
-    -   Resultados obtenidos
+    ### Explicación detallada del proyecto
+    La Plataforma de Análisis de Datos de Confereasy es un sistema interactivo de análisis diseñado para gestionar y evaluar los datos generados por los clientes y eventos en los espacios de Confereasy. Utilizando Python para el procesamiento y análisis de datos, la plataforma emplea tecnologías como Firebase para el almacenamiento en la nube, Streamlit para la creación de una interfaz visual e interactiva, y GitHub para el control de versiones y la colaboración. Con esta plataforma, Confereasy puede visualizar y analizar información clave como la tasa de ocupación de sus salas, la preferencia por tipos de eventos, la duración promedio de las reservas, y patrones de uso, entre otros datos. La implementación de Pandas en el proyecto permite el manejo y procesamiento de grandes conjuntos de datos, facilitando el análisis profundo y la generación de reportes personalizados.
+                
+    ### Procedimiento utilizado
+    -  Recopilación de datos: Se recolectan datos de eventos y reservas a través del sistema de Confereasy, y estos datos se almacenan en Firebase, asegurando que estén disponibles en tiempo real y sean accesibles desde la nube.
+    -  Procesamiento y análisis de datos: Con Python y Pandas, los datos se limpian, procesan y organizan para facilitar su interpretación. Se aplican diversas técnicas de análisis para identificar tendencias y patrones específicos relevantes para la gestión de eventos.
+    -  Desarrollo de la interfaz con Streamlit: Se crea una interfaz visual con Streamlit que permite a los usuarios explorar los datos mediante gráficos interactivos, tablas y filtros. Esta interfaz facilita el acceso y análisis de la información, permitiendo realizar consultas y generar reportes específicos.
+    -  Control de versiones y colaboración en GitHub: GitHub se utiliza para almacenar y gestionar el código de la plataforma, permitiendo el  seguimiento de cambios y la colaboración entre los desarrolladores.
+    -  Visualización y generación de reportes: Se diseñan visualizaciones intuitivas para que el equipo de Confereasy pueda interpretar fácilmente los resultados. Estas visualizaciones pueden exportarse como reportes en diferentes formatos, facilitando la presentación de información para la toma de decisiones.
 
     ### Conclusión
 
