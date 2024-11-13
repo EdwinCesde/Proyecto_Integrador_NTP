@@ -7,6 +7,8 @@ from firebase_admin import credentials, firestore
 from typing import List
 from datetime import datetime, timedelta
 
+import matplotlib.pyplot as plt
+
 st.set_page_config(layout="wide")
 
 st.subheader("Proyecto Integrador")
@@ -92,24 +94,19 @@ with tad_descripcion:
 ]
 
     salon: List[str] = [
-        'Auditorio', 'Salon social', 'Penhouse', 
+        'Auditorio', 'Salon social', 'Penhouse'
 ]
 
     categorias: List[str] = [
         "Cumpleaños",
-        "Bodas",
         "Aniversarios",
         "Graduaciones",
         "Fiestas temáticas",
-        "Baby showers",
         "Fiestas de despedida",
-        "Fiestas de fin de año",
         "Halloween",
         "Fiestas corporativas",
-        "Fiestas de verano",
         "Fiestas de inauguración",
-        "Fiestas de caridad",
-        "Picnics"
+        "Fiestas de caridad"
 ]
 def random_date(start: datetime, end: datetime) -> datetime:
     delta = end - start
@@ -263,6 +260,36 @@ with tab_Filtrado_Básico:
 #----------------------------------------------------------
 with tab_Filtro_Final_Dinámico:
         st.title("Filtro Final Dinámico")
+        
+        st.markdown("""
+        Muestra las profesiones según lo filtrado por el usuario y si este selecciona mas de una profesión, las diferencia por colores
+""")
+
+        st.header("Filtros")
+
+        min_edad, max_edad = int(df["edad"].min()), int(df["edad"].max())
+        filtro_edad = st.select_slider('Rango de Edad', options=range(min_edad, max_edad + 1), value=(min_edad, max_edad))
+
+        filtro_profesion = st.multiselect(
+            'Profesiones', df["profesiones"].unique()
+        )
+
+        df_filtrado = df.copy()
+        df_filtrado = df_filtrado[(df_filtrado["edad"] >= filtro_edad[0]) & (df_filtrado["edad"] <= filtro_edad[1])]
+        if filtro_profesion:
+            df_filtrado = df_filtrado[df_filtrado["profesiones"].isin(filtro_profesion)]
+
+        fig, ax = plt.subplots()
+        for profesion in df_filtrado["profesiones"].unique():
+            data = df_filtrado[df_filtrado["profesiones"] == profesion]
+            ax.hist(data["edad"], bins=10, alpha=0.5, label=profesion)
+
+        ax.set_xlabel('Edad')
+        ax.set_ylabel('Frecuencia')
+        ax.legend(title='Profesiones')
+
+        st.pyplot(fig)
+
         st.markdown("""
         * Muestra un resumen dinámico del DataFrame filtrado. 
         * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
