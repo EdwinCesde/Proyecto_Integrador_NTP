@@ -84,34 +84,32 @@ with tab_Filtrado_Básico:
         
         # Agregar un sidebar para los filtros
         st.header('Filtros') # realizar filtros
-        """
-        filtro_dpto = st.multiselect(
-            'DEPARTAMENTO', df['DEPARTAMENTO'].unique()  # Asegúrate que el nombre de la columna es correcto
-        )
 
-        filtro_genero = st.multiselect(
-            'GENERO', df['GENERO'].unique()  # Asegúrate que el nombre de la columna es correcto
-        )
+        # Filtrar el DataFrame con base en el departamento seleccionado
+        #df_filtrado = df[df["DEPARTAMENTO"] == departamento_seleccionado]
 
-        filtro_grupo = st.multiselect(
-            'GRUPO ETARÍO', df['GRUPO ETARÍO'].unique()  # Asegúrate que el nombre de la columna es correcto
-        )
+        # Mostrar la tabla filtrada
+        #st.write(f"Mostrando datos para el departamento: {departamento_seleccionado}")
+        #st.dataframe(df_filtrado)
+        st.title("Municipios por departamento")
+        st.write("Por favor seleccione el departamento y luego busque el municipio para visualizar los datos")
+        departamento_seleccionado = st.selectbox("DEPARTAMENTO", df["DEPARTAMENTO"].unique())
 
-        # Filtrar los datos
-        df_filtro = df.copy()
-        if filtro_dpto:
-            df_filtro = df_filtro[df_filtro['DEPARTAMENTO'].isin(filtro_dpto)]
-        if filtro_genero:
-            df_filtro = df_filtro[df_filtro['GENERO'].isin(filtro_genero)]
-        if filtro_grupo:
-            df_filtro = df_filtro[df_filtro['GRUPO ETARÍO'].isin(filtro_grupo)]
-
-        st.bar_chart()
+        # Filtrar los municipios correspondientes al departamento seleccionado
+        municipios_disponibles = df[df["DEPARTAMENTO"] == departamento_seleccionado]["MUNICIPIO"].unique()
         
+        #Filtro para seleccionar Municipio del departamento seleccionado
+        municipio = st.multiselect("Municipios", municipios_disponibles)
 
-        # Mostrar el DataFrame filtrado
-        st.dataframe(df_filtro)
-        """
+        # Filtrar el DataFrame con base en los municipios seleccionados (si no seleccionan, muestra todos los del departamento)
+        if municipio:
+             df_filtro = df[(df["DEPARTAMENTO"] == departamento_seleccionado) & 
+                            (df["MUNICIPIO"].isin(municipio))]
+        else:
+             df_filtro = df[df[df["DEPARTAMENTO"] == departamento_seleccionado]]
+
+        st.write("Datos filtrados", df_filtro)
+
 
 #----------------------------------------------------------
 #Analítica 3
@@ -176,14 +174,12 @@ with tab_Filtro_Final_Dinámico:
         acc_dto = df['DEPARTAMENTO'].value_counts()
 
         st.bar_chart(acc_dto)
-        st.markdown("""
-        * Muestra un resumen dinámico del DataFrame filtrado. 
-        * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
-        * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
-        """)
-
+        
+        st.title("Accidentes por Grupo etario")
         acc_mpio = df['GRUPO ETARÍO'].value_counts()
         st.bar_chart(acc_mpio)
+
+        
 
     
 
