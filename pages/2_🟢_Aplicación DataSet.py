@@ -12,7 +12,7 @@ st.subheader("Análisis y Filtrado de Datos")
 df = pd.read_csv('./static/datasets/homicidios_trancito.csv') # DATAFRAME
 
 
-tad_descripcion, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Análisis Exploratorio", "Filtrado Básico", "Filtro Final Dinámico"])
+tad_descripcion, tab_Análisis_Exploratorio, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Análisis Exploratorio", "Filtro Final Dinámico"])
 
 #----------------------------------------------------------
 #Generador de datos
@@ -76,21 +76,10 @@ with tab_Análisis_Exploratorio:
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------
-with tab_Filtrado_Básico:
-        st.title("Filtro Básico")
-        st.title("Análisis Exploratorio")
-    #     Definir la URL de la API y parámetros
-    #    Hacerlo desde el csv 
-        
-        # Agregar un sidebar para los filtros
-        st.header('Filtros') # realizar filtros
 
-        # Filtrar el DataFrame con base en el departamento seleccionado
-        #df_filtrado = df[df["DEPARTAMENTO"] == departamento_seleccionado]
+with tab_Filtro_Final_Dinámico:
+        st.title("Filtro Final Dinámico")
 
-        # Mostrar la tabla filtrada
-        #st.write(f"Mostrando datos para el departamento: {departamento_seleccionado}")
-        #st.dataframe(df_filtrado)
         st.title("Municipios por departamento")
         st.write("Por favor seleccione el departamento y luego busque el municipio para visualizar los datos")
         departamento_seleccionado = st.selectbox("DEPARTAMENTO", df["DEPARTAMENTO"].unique())
@@ -110,12 +99,7 @@ with tab_Filtrado_Básico:
 
         st.write("Datos filtrados", df_filtro)
 
-
-#----------------------------------------------------------
-#Analítica 3
-#----------------------------------------------------------
-with tab_Filtro_Final_Dinámico:
-        st.title("Filtro Final Dinámico")
+        st.title("Cantidad de accidentes por Género")
 
         filtro_departamento = st.multiselect(
              "DEPARTAMENTO",
@@ -157,6 +141,8 @@ with tab_Filtro_Final_Dinámico:
         ax.legend(title='Grupo Etario')
 
         st.pyplot(fig)
+
+        st.title("Cantidad de accidentes por género y vehículo")
 
         fig, ax = plt.subplots()
         for grupo in df_filtrado["ARMAS MEDIOS"].unique():
