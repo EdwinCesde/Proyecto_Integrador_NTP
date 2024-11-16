@@ -92,12 +92,18 @@ with tab_Filtro_Final_Dinámico:
 
         # Filtrar el DataFrame con base en los municipios seleccionados (si no seleccionan, muestra todos los del departamento)
         if municipio:
-             df_filtro = df[(df["DEPARTAMENTO"] == departamento_seleccionado) & 
-                            (df["MUNICIPIO"].isin(municipio))]
+            if municipio:
+                df_filtro = df[(df["DEPARTAMENTO"] == departamento_seleccionado) & 
+                                (df["MUNICIPIO"].isin(municipio))]
+                st.write("Datos filtrados", df_filtro)
+            else:
+                df_filtro = df[df[df["DEPARTAMENTO"] == departamento_seleccionado]]
         else:
-             df_filtro = df[df[df["DEPARTAMENTO"] == departamento_seleccionado]]
+            st.write("Todos los campos son obligarios")  
+                  
+        #st.write("Datos filtrados", df_filtro)
 
-        st.write("Datos filtrados", df_filtro)
+        
 
         st.title("Cantidad de accidentes por Género")
 
