@@ -12,7 +12,7 @@ st.subheader("Análisis y Filtrado de Datos")
 df = pd.read_csv('./static/datasets/homicidios_trancito.csv') # DATAFRAME
 
 
-tad_descripcion, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Análisis Exploratorio", "Filtrado Básico", "Filtro Final Dinámico"])
+tad_descripcion, tab_Análisis_Exploratorio, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Análisis Exploratorio", "Filtro Final Dinámico"])
 
 #----------------------------------------------------------
 #Generador de datos
@@ -76,48 +76,36 @@ with tab_Análisis_Exploratorio:
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------
-with tab_Filtrado_Básico:
-        st.title("Filtro Básico")
-        st.title("Análisis Exploratorio")
-    #     Definir la URL de la API y parámetros
-    #    Hacerlo desde el csv 
-        
-        # Agregar un sidebar para los filtros
-        st.header('Filtros') # realizar filtros
-        """
-        filtro_dpto = st.multiselect(
-            'DEPARTAMENTO', df['DEPARTAMENTO'].unique()  # Asegúrate que el nombre de la columna es correcto
-        )
 
-        filtro_genero = st.multiselect(
-            'GENERO', df['GENERO'].unique()  # Asegúrate que el nombre de la columna es correcto
-        )
-
-        filtro_grupo = st.multiselect(
-            'GRUPO ETARÍO', df['GRUPO ETARÍO'].unique()  # Asegúrate que el nombre de la columna es correcto
-        )
-
-        # Filtrar los datos
-        df_filtro = df.copy()
-        if filtro_dpto:
-            df_filtro = df_filtro[df_filtro['DEPARTAMENTO'].isin(filtro_dpto)]
-        if filtro_genero:
-            df_filtro = df_filtro[df_filtro['GENERO'].isin(filtro_genero)]
-        if filtro_grupo:
-            df_filtro = df_filtro[df_filtro['GRUPO ETARÍO'].isin(filtro_grupo)]
-
-        st.bar_chart()
-        
-
-        # Mostrar el DataFrame filtrado
-        st.dataframe(df_filtro)
-        """
-
-#----------------------------------------------------------
-#Analítica 3
-#----------------------------------------------------------
 with tab_Filtro_Final_Dinámico:
         st.title("Filtro Final Dinámico")
+
+        st.title("Municipios por departamento")
+        st.write("Por favor seleccione el departamento y luego busque el municipio para visualizar los datos")
+        departamento_seleccionado = st.selectbox("DEPARTAMENTO", df["DEPARTAMENTO"].unique())
+
+        # Filtrar los municipios correspondientes al departamento seleccionado
+        municipios_disponibles = df[df["DEPARTAMENTO"] == departamento_seleccionado]["MUNICIPIO"].unique()
+        
+        #Filtro para seleccionar Municipio del departamento seleccionado
+        municipio = st.multiselect("Municipios", municipios_disponibles)
+
+        # Filtrar el DataFrame con base en los municipios seleccionados (si no seleccionan, muestra todos los del departamento)
+        if municipio:
+            if municipio:
+                df_filtro = df[(df["DEPARTAMENTO"] == departamento_seleccionado) & 
+                                (df["MUNICIPIO"].isin(municipio))]
+                st.write("Datos filtrados", df_filtro)
+            else:
+                df_filtro = df[df[df["DEPARTAMENTO"] == departamento_seleccionado]]
+        else:
+            st.write("Todos los campos son obligarios")  
+                  
+        #st.write("Datos filtrados", df_filtro)
+
+        
+
+        st.title("Cantidad de accidentes por Género")
 
         filtro_departamento = st.multiselect(
              "DEPARTAMENTO",
@@ -160,6 +148,8 @@ with tab_Filtro_Final_Dinámico:
 
         st.pyplot(fig)
 
+        st.title("Cantidad de accidentes por género y vehículo")
+
         fig, ax = plt.subplots()
         for grupo in df_filtrado["ARMAS MEDIOS"].unique():
             data = df_filtrado[df_filtrado["ARMAS MEDIOS"] == grupo]
@@ -176,14 +166,12 @@ with tab_Filtro_Final_Dinámico:
         acc_dto = df['DEPARTAMENTO'].value_counts()
 
         st.bar_chart(acc_dto)
-        st.markdown("""
-        * Muestra un resumen dinámico del DataFrame filtrado. 
-        * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
-        * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
-        """)
-
+        
+        st.title("Accidentes por Grupo etario")
         acc_mpio = df['GRUPO ETARÍO'].value_counts()
         st.bar_chart(acc_mpio)
+
+        
 
     
 
