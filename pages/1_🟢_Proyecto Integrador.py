@@ -28,7 +28,7 @@ if not firebase_admin._apps:
 db = firestore.client()
 
 
-tad_descripcion, tab_Generador, tab_datos, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Generador de datos", "Datos", "Análisis Exploratorio", "Filtrado Básico", "Filtro Final Dinámico"])
+tad_descripcion, tab_Generador, tab_datos, tab_Análisis_Exploratorio, tab_Filtro_Final_Dinámico = st.tabs(["Descripción", "Generador de datos", "Datos", "Análisis Exploratorio", "Filtro Final Dinámico"])
 
 #----------------------------------------------------------
 #Generador de datos
@@ -230,8 +230,11 @@ with tab_Análisis_Exploratorio:
 #----------------------------------------------------------
 #Analítica 2
 #----------------------------------------------------------
-with tab_Filtrado_Básico:
-        st.title("Filtro Básico")
+#----------------------------------------------------------
+#Analítica 2
+#----------------------------------------------------------
+with tab_Filtro_Final_Dinámico:
+        st.title("Filtro Final Dinámico")
         st.header('Filtros') # realizar filtros
         filtro_nac = st.multiselect(
             'nacionalidad', df['nacionalidad'].unique()  # Asegúrate que el nombre de la columna es correcto
@@ -256,13 +259,6 @@ with tab_Filtrado_Básico:
 
         # Mostrar el DataFrame filtrado
         st.dataframe(df_filtro)
-
-#----------------------------------------------------------
-#Analítica 2
-#----------------------------------------------------------
-with tab_Filtro_Final_Dinámico:
-        st.title("Filtro Final Dinámico")
-        
         st.markdown("""
         Muestra las profesiones según lo filtrado por el usuario y si este selecciona mas de una profesión, las diferencia por colores
 """)
@@ -291,9 +287,3 @@ with tab_Filtro_Final_Dinámico:
         ax.legend(title='Profesiones')
 
         st.pyplot(fig)
-
-        st.markdown("""
-        * Muestra un resumen dinámico del DataFrame filtrado. 
-        * Incluye información como los criterios de filtrado aplicados, la tabla de datos filtrados, gráficos y estadísticas relevantes.
-        * Se actualiza automáticamente cada vez que se realiza un filtro en las pestañas anteriores. 
-        """)
