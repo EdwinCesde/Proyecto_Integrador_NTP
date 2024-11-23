@@ -94,7 +94,7 @@ with tad_descripcion:
 ]
 
     salon: List[str] = [
-        'Auditorio', 'Salon social', 'Penhouse'
+        'Auditorio', 'Salon social', 'Brainstorm', 'Capacitaciones'
 ]
 
     categorias: List[str] = [
@@ -128,8 +128,10 @@ def generate_fake_users(n):
         elif salon_seleccionado == 'Salon social':
             aforo = random.randint(1, 40)
 
-        elif salon_seleccionado == 'Penhouse':
+        elif salon_seleccionado == 'Brainstorm':
             aforo = random.randint(20, 50)
+        elif salon_seleccionado == 'Capacitaciones':
+            aforo = random.randint(1, 40)
             
         user = {
             'nombre': fake.name(),
