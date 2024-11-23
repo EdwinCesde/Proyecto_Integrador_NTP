@@ -20,26 +20,44 @@ tad_descripcion, tab_Análisis_Exploratorio, tab_Filtrado_Básico, tab_Filtro_Fi
 with tad_descripcion:      
 
     st.markdown('''
-    ## Plantilla Básica para Proyecto Integrador
+    ## Homicidios accidente de tránsito Policía Nacional
 
     ### Introducción
 
     -   ¿Qué es el proyecto?
+        Este proyecto presenta un análisis de datos relacionados con homicidios por accidentes de tránsito en la nación, cubriendo el periodo del 1 de enero de 2010 al 31 de octubre de 2024. La ciudadanía puede acceder a esta información para comprender patrones, tendencias y características de estos incidentes.
+
     -   ¿Cuál es el objetivo principal?
+        El objetivo principal es facilitar el acceso y la comprensión de datos históricos sobre homicidios en accidentes de tránsito, proporcionando herramientas analíticas que permitan identificar tendencias y posibles factores de riesgo.
+        
     -   ¿Por qué es importante?
+        Democratiza el acceso a datos públicos, promueve el uso de datos para la toma de decisiones y políticas, facilita la identificación de factores críticos de accidentes.
 
     ### Desarrollo
 
-    -   Explicación detallada del proyecto
-    -   Procedimiento utilizado
-    -   Resultados obtenidos
+    -   Explicación detallada del proyecto:
+        Framework: Streamlit (rápido y fácil de usar para crear dashboards).
+        Funcionalidades: Filtros interactivos, gráficos dinámicos y tablas.
+    -   Procedimiento utilizado:
+        Phyton con librerias streamlit, pandas,firebase y generador de texto con Gemini IA
+        
+    -   Resultados obtenidos:
+        Página web funcional para análisis de datos en tiempo real.
+        Visualizaciones intuitivas para el usuario final.
+        
+
 
     ### Conclusión
 
     -   Resumen de los resultados
-    -   Logros alcanzados
-    -   Dificultades encontradas
-    -   Aportes personales
+    -   Logros alcanzados:
+        El frontend consume los datos del backend, los visualiza y permite a los usuarios interactuar con filtros.
+    -   Dificultades encontradas:
+        sincronización entre backend y frontend.
+        Optimización de consultas para manejar grandes volúmenes de datos.
+    -   Aportes personales:
+        Diseño de una interfaz clara y accesible.
+        Optimización del backend para consultas dinámicas.
     ''')    
 
 #----------------------------------------------------------
