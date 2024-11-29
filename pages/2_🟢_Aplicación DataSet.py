@@ -137,6 +137,44 @@ with tab_Filtrado_Básico:
 with tab_Filtro_Final_Dinámico:
         st.title("Filtro Final Dinámico")
 
+<<<<<<< Updated upstream
+=======
+        st.title("Municipios por departamento")
+        st.write("Por favor seleccione el departamento y luego busque el municipio para visualizar los datos")
+        departamento_seleccionado = st.selectbox("DEPARTAMENTO", df["DEPARTAMENTO"].unique())
+
+        # Filtrar los municipios correspondientes al departamento seleccionado
+        municipios_disponibles = df[df["DEPARTAMENTO"] == departamento_seleccionado]["MUNICIPIO"].unique()
+        
+        #Filtro para seleccionar Municipio del departamento seleccionado
+        municipio = st.multiselect("Municipios", municipios_disponibles)
+
+        # Filtrar el DataFrame con base en los municipios seleccionados (si no seleccionan, muestra todos los del departamento)
+        if municipio:
+            if municipio:
+                df_filtro = df[(df["DEPARTAMENTO"] == departamento_seleccionado) & 
+                                (df["MUNICIPIO"].isin(municipio))]
+                if not df_filtro.empty:
+                    conteo_municipios = df_filtro['MUNICIPIO'].value_counts()
+                    fig, ax = plt.subplots(figsize=(10, 6))
+                    conteo_municipios.plot(kind='bar', color='skyblue', ax=ax)
+                    ax.set_title("Distribución de Registros por Municipio", fontsize=16)
+                    ax.set_xlabel("Municipio", fontsize=12)
+                    ax.set_ylabel("Cantidad de Registros", fontsize=12)
+                    ax.tick_params(axis='x', rotation=45)
+                    ax.grid(axis='y', linestyle='--', alpha=0.7)
+
+                    st.pyplot(fig)
+                else:
+                    st.warning("No hay datos disponibles para los criterios seleccionados")                
+            else:
+                df_filtro = df[df[df["DEPARTAMENTO"] == departamento_seleccionado]]
+        else:
+            st.write("Todos los campos son obligarios")  
+              
+        st.title("Cantidad de accidentes por Género")
+
+>>>>>>> Stashed changes
         filtro_departamento = st.multiselect(
              "DEPARTAMENTO",
              df['DEPARTAMENTO'].unique()
@@ -165,7 +203,7 @@ with tab_Filtro_Final_Dinámico:
         if filtro_genero:
             df_filtrado = df_filtrado[df_filtrado["GENERO"].isin(filtro_genero)] 
         if filtro_grupo:
-            df_filtrado = df_filtrado[df_filtrado["GRUPO ETARIO"].isin(filtro_grupo)]
+            df_filtrado = df_filtrado[df_filtrado["GRUPO ETARÍO"].isin(filtro_grupo)]
    
         fig, ax = plt.subplots()
         for grupo in df_filtrado["GRUPO ETARÍO"].unique():

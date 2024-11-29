@@ -17,8 +17,8 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 # The ID and range of a sample spreadsheet.
 SPREADSHEET_ID = st.text_input("ID  hoja de cálculo")
-RANGE1 = "Sheet1!A:E"
-RANGE2 = "Sheet2!A:E"
+RANGE1 = "Hoja 1!A:E"
+RANGE2 = "Hoja 2!A:E"
 
 google_sheet_credentials = st.secrets["GOOGLE_SHEET_CREDENTIALS"]  
 secrets_dict = google_sheet_credentials.to_dict()     
@@ -45,11 +45,13 @@ if st.button("Analizar datos de Google Sheet"):
     df = read_sheet()
     st.header("Datos hoja1")
     st.dataframe(df)
-    df_update = pd.DataFrame({
+    """df_update = pd.DataFrame({
         'Columna1': ['Nuevo1', 'Nuevo2', 'Nuevo3'],
         'Columna2': [1, 2, 3],
         'Columna3': ['A', 'B', 'C']
-    })
+    })"""
+
+    df_update = st.dataframe(df.shape)
     
     # Actualizar la hoja de cálculo
     result = update_sheet(df_update)
