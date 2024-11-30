@@ -137,8 +137,7 @@ with tab_Filtrado_Básico:
 with tab_Filtro_Final_Dinámico:
         st.title("Filtro Final Dinámico")
 
-<<<<<<< Updated upstream
-=======
+
         st.title("Municipios por departamento")
         st.write("Por favor seleccione el departamento y luego busque el municipio para visualizar los datos")
         departamento_seleccionado = st.selectbox("DEPARTAMENTO", df["DEPARTAMENTO"].unique())
@@ -174,7 +173,7 @@ with tab_Filtro_Final_Dinámico:
               
         st.title("Cantidad de accidentes por Género")
 
->>>>>>> Stashed changes
+
         filtro_departamento = st.multiselect(
              "DEPARTAMENTO",
              df['DEPARTAMENTO'].unique()
